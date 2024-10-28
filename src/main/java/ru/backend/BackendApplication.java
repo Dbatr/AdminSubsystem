@@ -13,6 +13,7 @@ public class BackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
 		log.info("Application started in http://localhost:8000");
+		log.info("Swagger UI available at: http://localhost:8000/swagger-ui/index.html");
 	}
 
 }
