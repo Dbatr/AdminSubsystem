@@ -16,7 +16,6 @@ import java.util.Set;
 @Table(name = "canban_task")
 public class Task {
 
-    // Getters и Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,7 +48,6 @@ public class Task {
     )
     private Set<Profile> responsibleUsers;
 
-    // Конструкторы
     public Task() {}
 
     public Task(String name, String description, LocalDateTime datetime, Profile author, Direction direction) {

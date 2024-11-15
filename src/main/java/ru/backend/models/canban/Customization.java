@@ -10,7 +10,6 @@ import lombok.Setter;
 @Table(name = "canban_customization")
 public class Customization {
 
-    // Getters и Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +21,6 @@ public class Customization {
     @JoinColumn(name = "task_id", nullable = false)
     private Task task;
 
-    // Конструкторы
     public Customization() {}
 
     public Customization(String photo, Task task) {
