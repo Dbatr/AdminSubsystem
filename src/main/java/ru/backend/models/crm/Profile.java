@@ -1,5 +1,6 @@
 package ru.backend.models.crm;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,10 @@ import java.util.Set;
 public class Profile {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
@@ -27,10 +32,10 @@ public class Profile {
     @Column(length = 100)
     private String email;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100)
     private String surname;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 100)
     private String name;
 
     @Column(length = 100)

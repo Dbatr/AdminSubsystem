@@ -13,6 +13,9 @@ import ru.backend.models.User;
 public class Efficiency {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Автоматическая генерация ID
+    private Long id;
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
