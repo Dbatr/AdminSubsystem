@@ -1,4 +1,4 @@
-package ru.backend.models;
+package ru.backend.models.crm;
 
 import jakarta.persistence.*;
 import lombok.Data;

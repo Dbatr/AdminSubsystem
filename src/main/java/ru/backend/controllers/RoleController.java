@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.backend.dtos.RoleDTO;
-import ru.backend.models.Role;
+import ru.backend.models.crm.Role;
 import ru.backend.services.RoleService;
 
 import jakarta.validation.Valid;

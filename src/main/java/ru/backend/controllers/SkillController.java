@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.backend.dtos.SkillDTO;
-import ru.backend.models.Skill;
+import ru.backend.models.crm.Skill;
 import ru.backend.services.SkillService;
 
 import java.util.List;

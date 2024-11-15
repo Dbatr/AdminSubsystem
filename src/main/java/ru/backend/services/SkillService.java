@@ -3,7 +3,7 @@ package ru.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.backend.dtos.SkillDTO;
-import ru.backend.models.Skill;
+import ru.backend.models.crm.Skill;
 import ru.backend.repositories.SkillRepository;
 
 import java.util.List;

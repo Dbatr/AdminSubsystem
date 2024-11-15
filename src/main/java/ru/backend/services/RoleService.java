@@ -3,7 +3,7 @@ package ru.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.backend.dtos.RoleDTO;
-import ru.backend.models.Role;
+import ru.backend.models.crm.Role;
 import ru.backend.repositories.RoleRepository;
 
 import java.util.List;
