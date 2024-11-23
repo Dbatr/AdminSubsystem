@@ -6,6 +6,7 @@ urlpatterns = [
 
     path('profile/', ProfileDetailView.as_view(), name='profile_detail'),  # Для просмотра профиля текущего пользователя
     path('profile/<int:id>/', ProfileDetailView.as_view(), name='profile_detail_other'),  # Для просмотра профиля по id
+    path('profile/create/<int:user_id>/', AdminCreateProfileView.as_view(), name='admin_create_profile'),  # Создание профиля для юзера
 
     path('skills/', get_all_skills, name='get_all_skills'),
     path('skills/<int:pk>/', get_skill_by_id, name='get_skill_by_id'),

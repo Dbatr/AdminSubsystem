@@ -21,8 +21,10 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+from adminka.views import *
 
 urlpatterns = [
+    path('register/', SimpleRegistrationView.as_view(), name='simple_register'),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

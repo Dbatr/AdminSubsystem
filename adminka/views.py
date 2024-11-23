@@ -1,10 +1,21 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from adminka.permissions import IsOrganizerOrSupervisor
-from adminka.serializers import ProfileSerializer, SkillSerializer
+from adminka.serializers import *
 from crm.models import *
+
+
+class SimpleRegistrationView(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request):
+        serializer = SimpleRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Пользователь успешно зарегистрирован."}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SomeProtectedView(APIView):
@@ -38,6 +49,35 @@ class ProfileDetailView(APIView):
                 return Response({"detail": "Профиль не найден."}, status=status.HTTP_404_NOT_FOUND)
 
 
+class AdminCreateProfileView(APIView):
+    def post(self, request, user_id):
+        """
+        Создание профиля для указанного пользователя.
+        """
+        try:
+            # Получаем пользователя по ID
+            user = User.objects.get(id=user_id)
+
+            # Проверяем, существует ли уже профиль
+            if hasattr(user, 'profile'):
+                return Response({"detail": "У данного пользователя уже есть профиль."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Создаем профиль для пользователя
+            data = request.data
+            data['author'] = user.id  # Привязываем профиль к указанному пользователю
+            serializer = ProfileSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"message": "Профиль успешно создан.", "data": serializer.data}, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except User.DoesNotExist:
+            return Response({"detail": "Пользователь не найден."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 # Получение всех навыков
 @api_view(['GET'])
 def get_all_skills(request):
@@ -66,6 +106,7 @@ def add_skill(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 # Удаление навыка
 @api_view(['DELETE'])
