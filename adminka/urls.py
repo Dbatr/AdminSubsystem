@@ -1,9 +1,11 @@
 from django.urls import path
 
+from adminka.views.directions_views import *
 from adminka.views.efficiencies_views import *
 from adminka.views.profiles_views import *
 from adminka.views.projects_views import *
 from adminka.views.skills_views import *
+from adminka.views.teams_views import *
 from adminka.views.users_views import *
 from adminka.views.views import *
 
@@ -36,4 +38,19 @@ urlpatterns = [
     path('project/create/', create_project, name='create_project'),
     path('project/<int:project_id>/update/', update_project, name='update_project'),
     path('project/<int:project_id>/delete/', delete_project, name='delete_project'),
+
+
+    path('directions/', get_all_directions, name='get_all_directions'),
+    path('directions/<int:direction_id>/', get_direction_by_id, name='get_direction_by_id'),
+    path('directions/create/', create_direction, name='create_direction'),
+    path('directions/<int:direction_id>/update/', update_direction, name='update_direction'),
+    path('directions/<int:direction_id>/delete/', delete_direction, name='delete_direction'),
+
+
+    path('teams/', get_all_teams, name='get_all_teams'),
+    path('teams/<int:team_id>/', get_team_by_id, name='get_team_by_id'),
+    path('teams/create/', create_team, name='create_team'),
+    path('teams/<int:team_id>/update/', update_team, name='update_team'),
+    path('teams/<int:team_id>/delete/', delete_team, name='delete_team'),
+
 ]
