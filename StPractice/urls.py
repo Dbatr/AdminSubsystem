@@ -21,7 +21,8 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
-from adminka.views import *
+from adminka.views.registration_views import SimpleRegistrationView
+from adminka.views.views import *
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [

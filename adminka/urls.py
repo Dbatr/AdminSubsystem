@@ -1,5 +1,11 @@
 from django.urls import path
-from adminka.views import *
+
+from adminka.views.efficiencies_views import *
+from adminka.views.profiles_views import *
+from adminka.views.projects_views import *
+from adminka.views.skills_views import *
+from adminka.views.users_views import *
+from adminka.views.views import *
 
 urlpatterns = [
     path('protected/', SomeProtectedView.as_view(), name='protected_view'),
