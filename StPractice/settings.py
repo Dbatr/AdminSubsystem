@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'canban.apps.CanbanConfig',
     'rest_framework',
 
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,16 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
 'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'AdminSubsystem',
+    'DESCRIPTION': 'Admin Subsystem StPractice Api',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
 }
 
 ROOT_URLCONF = 'StPractice.urls'

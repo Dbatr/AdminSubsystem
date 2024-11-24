@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -12,6 +13,11 @@ from django.shortcuts import get_object_or_404
 # Registration
 class SimpleRegistrationView(APIView):
     permission_classes = [AllowAny]
+
+    @extend_schema(
+        request=SimpleRegistrationSerializer,
+        responses={201: 'Пользователь успешно зарегистрирован.', 400: 'Ошибки валидации'}
+    )
     def post(self, request):
         serializer = SimpleRegistrationSerializer(data=request.data)
         if serializer.is_valid():
@@ -24,6 +30,11 @@ class AllProfilesView(APIView):
     """
     Получение всех профилей.
     """
+
+    @extend_schema(
+        responses=ProfileSerializer(many=True),
+        description="Получение списка всех профилей."
+    )
     def get(self, request):
         profiles = Profile.objects.all()
         serializer = ProfileSerializer(profiles, many=True)
@@ -34,6 +45,11 @@ class AllUsersView(APIView):
     """
     Получение всех пользователей.
     """
+
+    @extend_schema(
+        responses=UserSerializer(many=True),
+        description="Получение списка всех пользователей."
+    )
     def get(self, request):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
@@ -44,6 +60,11 @@ class UserDetailView(APIView):
     """
     Получение пользователя по ID.
     """
+
+    @extend_schema(
+        responses={200: UserSerializer, 404: 'Пользователь не найден.'},
+        description="Получение данных пользователя по ID."
+    )
     def get(self, request, user_id):
         user = get_object_or_404(User, pk=user_id)
         serializer = UserSerializer(user)
@@ -54,6 +75,10 @@ class UserDetailView(APIView):
 class SomeProtectedView(APIView):
     permission_classes = [IsOrganizerOrSupervisor]
 
+    @extend_schema(
+        responses={200: 'Доступ разрешен!'},
+        description="Пример проверки роли пользователя."
+    )
     def get(self, request):
         return Response({"message": "Доступ разрешен!"})
 
@@ -61,6 +86,11 @@ class SomeProtectedView(APIView):
 class ProfileDetailView(APIView):
     permission_classes = [IsOrganizerOrSupervisor]  # Потребуется аутентификация
 
+    @extend_schema(
+        parameters=[int],
+        responses={200: ProfileSerializer, 404: 'Профиль не найден.'},
+        description="Получение профиля по ID."
+    )
     def get(self, request, *args, **kwargs):
         profile_id = kwargs.get('id')  # Получаем id из URL
 
@@ -87,6 +117,11 @@ class AdminProfileView(APIView):
     API для создания, полного и частичного обновления профиля пользователя.
     """
 
+    @extend_schema(
+        request=ProfileSerializer,
+        responses={201: ProfileSerializer, 400: 'Ошибка валидации', 404: 'Пользователь не найден.'},
+        description="Создание профиля для пользователя."
+    )
     def post(self, request, user_id):
         """
         Создание профиля для указанного пользователя.
@@ -114,6 +149,11 @@ class AdminProfileView(APIView):
         except Exception as e:
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @extend_schema(
+        request=ProfileSerializer,
+        responses={200: ProfileSerializer, 404: 'Профиль не найден.'},
+        description="Полное обновление профиля."
+    )
     def put(self, request, user_id):
         """
         Полное обновление профиля указанного пользователя.
@@ -139,6 +179,11 @@ class AdminProfileView(APIView):
         except Exception as e:
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    @extend_schema(
+        request=ProfileSerializer(partial=True),
+        responses={200: ProfileSerializer, 404: 'Профиль не найден.'},
+        description="Частичное обновление профиля."
+    )
     def patch(self, request, user_id):
         """
         Частичное обновление профиля указанного пользователя.
@@ -166,6 +211,10 @@ class AdminProfileView(APIView):
 
 
 # Получение всех навыков
+@extend_schema(
+    responses=SkillSerializer(many=True),
+    description="Получение всех навыков."
+)
 @api_view(['GET'])
 def get_all_skills(request):
     skills = Skill.objects.all()
@@ -174,6 +223,11 @@ def get_all_skills(request):
 
 
 # Получение навыка по ID
+@extend_schema(
+    parameters=[int],
+    responses={200: SkillSerializer, 404: 'Навык не найден.'},
+    description="Получение навыка по ID."
+)
 @api_view(['GET'])
 def get_skill_by_id(request, pk):
     try:
@@ -185,6 +239,11 @@ def get_skill_by_id(request, pk):
 
 
 # Добавление нового навыка
+@extend_schema(
+    request=SkillSerializer,
+    responses={201: SkillSerializer, 400: 'Ошибка валидации'},
+    description="Добавление нового навыка."
+)
 @api_view(['POST'])
 def add_skill(request):
     if request.method == 'POST':
@@ -196,6 +255,11 @@ def add_skill(request):
 
 
 # Удаление навыка
+@extend_schema(
+    parameters=[int],
+    responses={204: None, 404: 'Навык не найден.'},
+    description="Удаление навыка."
+)
 @api_view(['DELETE'])
 def delete_skill(request, pk):
     try:
