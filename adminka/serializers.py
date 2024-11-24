@@ -34,3 +34,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'is_active', 'date_joined']
 
+
+class EfficiencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Efficiency
+        fields = ['user', 'count', 'rating']

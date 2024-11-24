@@ -17,4 +17,11 @@ urlpatterns = [
     path('skills/<int:pk>/', get_skill_by_id, name='get_skill_by_id'),
     path('skills/add/', add_skill, name='add_skill'),
     path('skills/delete/<int:pk>/', delete_skill, name='delete_skill'),
+
+    path('efficiencies/', get_all_efficiencies, name='get_all_efficiencies'),
+    path('efficiency/<int:user_id>/', get_efficiency_by_user, name='get_efficiency_by_user'),
+    path('efficiency/create/', create_efficiency, name='create_efficiency'),
+    path('efficiency/<int:user_id>/update/', update_efficiency, name='update_efficiency'),
+    path('efficiency/<int:user_id>/partial/', partial_update_efficiency, name='partial_update_efficiency'),
+    path('efficiency/<int:user_id>/delete/', delete_efficiency, name='delete_efficiency'),
 ]
