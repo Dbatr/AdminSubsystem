@@ -24,4 +24,10 @@ urlpatterns = [
     path('efficiency/<int:user_id>/update/', update_efficiency, name='update_efficiency'),
     path('efficiency/<int:user_id>/partial/', partial_update_efficiency, name='partial_update_efficiency'),
     path('efficiency/<int:user_id>/delete/', delete_efficiency, name='delete_efficiency'),
+
+    path('projects/', get_all_projects, name='get_all_projects'),
+    path('project/<int:project_id>/', get_project_by_id, name='get_project_by_id'),
+    path('project/create/', create_project, name='create_project'),
+    path('project/<int:project_id>/update/', update_project, name='update_project'),
+    path('project/<int:project_id>/delete/', delete_project, name='delete_project'),
 ]

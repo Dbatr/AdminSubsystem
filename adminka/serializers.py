@@ -39,3 +39,9 @@ class EfficiencySerializer(serializers.ModelSerializer):
     class Meta:
         model = Efficiency
         fields = ['user', 'count', 'rating']
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = ['id', 'name', 'description', 'author', 'supervisor', 'curators', 'students', 'link', 'start', 'end']
