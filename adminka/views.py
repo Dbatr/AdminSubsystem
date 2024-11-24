@@ -6,8 +6,10 @@ from rest_framework.response import Response
 from adminka.permissions import IsOrganizerOrSupervisor
 from adminka.serializers import *
 from crm.models import *
+from django.shortcuts import get_object_or_404
 
 
+# Registration
 class SimpleRegistrationView(APIView):
     permission_classes = [AllowAny]
     def post(self, request):
@@ -18,6 +20,37 @@ class SimpleRegistrationView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class AllProfilesView(APIView):
+    """
+    Получение всех профилей.
+    """
+    def get(self, request):
+        profiles = Profile.objects.all()
+        serializer = ProfileSerializer(profiles, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AllUsersView(APIView):
+    """
+    Получение всех пользователей.
+    """
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class UserDetailView(APIView):
+    """
+    Получение пользователя по ID.
+    """
+    def get(self, request, user_id):
+        user = get_object_or_404(User, pk=user_id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# Role check
 class SomeProtectedView(APIView):
     permission_classes = [IsOrganizerOrSupervisor]
 
@@ -49,7 +82,11 @@ class ProfileDetailView(APIView):
                 return Response({"detail": "Профиль не найден."}, status=status.HTTP_404_NOT_FOUND)
 
 
-class AdminCreateProfileView(APIView):
+class AdminProfileView(APIView):
+    """
+    API для создания, полного и частичного обновления профиля пользователя.
+    """
+
     def post(self, request, user_id):
         """
         Создание профиля для указанного пользователя.
@@ -73,6 +110,56 @@ class AdminCreateProfileView(APIView):
 
         except User.DoesNotExist:
             return Response({"detail": "Пользователь не найден."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def put(self, request, user_id):
+        """
+        Полное обновление профиля указанного пользователя.
+        """
+        try:
+            # Получаем пользователя и профиль
+            user = User.objects.get(id=user_id)
+            profile = user.profile
+
+            # Полное обновление профиля
+            serializer = ProfileSerializer(profile, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"message": "Профиль успешно обновлен.", "data": serializer.data}, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except User.DoesNotExist:
+            return Response({"detail": "Пользователь не найден."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Profile.DoesNotExist:
+            return Response({"detail": "Профиль не найден."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def patch(self, request, user_id):
+        """
+        Частичное обновление профиля указанного пользователя.
+        """
+        try:
+            # Получаем пользователя и профиль
+            user = User.objects.get(id=user_id)
+            profile = user.profile
+
+            # Частичное обновление профиля
+            serializer = ProfileSerializer(profile, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"message": "Профиль успешно обновлен.", "data": serializer.data}, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        except User.DoesNotExist:
+            return Response({"detail": "Пользователь не найден."}, status=status.HTTP_404_NOT_FOUND)
+
+        except Profile.DoesNotExist:
+            return Response({"detail": "Профиль не найден."}, status=status.HTTP_404_NOT_FOUND)
 
         except Exception as e:
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
