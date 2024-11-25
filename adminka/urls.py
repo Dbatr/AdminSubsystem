@@ -7,6 +7,7 @@ from adminka.views.efficiencies_views import *
 from adminka.views.profiles_views import *
 from adminka.views.projects_views import *
 from adminka.views.skills_views import *
+from adminka.views.tasks_views import *
 from adminka.views.teams_views import *
 from adminka.views.users_views import *
 from adminka.views.views import *
@@ -67,5 +68,12 @@ urlpatterns = [
     path('app_reviews/create/', create_review, name='create_review'),
     path('app_reviews/<int:review_id>/update/', update_review, name='update_review'),
     path('app_reviews/<int:review_id>/delete/', delete_review, name='delete_review'),
+
+
+    path('tasks/', get_all_tasks, name='get_all_tasks'),
+    path('tasks/<int:task_id>/', get_task_by_id, name='get_task_by_id'),
+    path('tasks/create/', create_task, name='create_task'),
+    path('tasks/<int:task_id>/update/', update_task, name='update_task'),
+    path('tasks/<int:task_id>/delete/', delete_task, name='delete_task'),
 
 ]

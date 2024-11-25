@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from canban.models import *
 from crm.models import *
 
 
@@ -69,4 +71,11 @@ class AppReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = App_review
         fields = '__all__'
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = '__all__'
+
 
