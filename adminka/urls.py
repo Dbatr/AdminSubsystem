@@ -1,5 +1,7 @@
 from django.urls import path
 
+from adminka.views.app_reviews_views import *
+from adminka.views.applications_views import *
 from adminka.views.directions_views import *
 from adminka.views.efficiencies_views import *
 from adminka.views.profiles_views import *
@@ -52,5 +54,18 @@ urlpatterns = [
     path('teams/create/', create_team, name='create_team'),
     path('teams/<int:team_id>/update/', update_team, name='update_team'),
     path('teams/<int:team_id>/delete/', delete_team, name='delete_team'),
+
+
+    path('applications/', get_all_applications, name='get_all_applications'),
+    path('applications/<int:application_id>/', get_application_by_id, name='get_application_by_id'),
+    path('applications/create/', create_application, name='create_application'),
+    path('applications/<int:application_id>/update/', update_application, name='update_application'),
+    path('applications/<int:application_id>/delete/', delete_application, name='delete_application'),
+
+    path('app_reviews/', get_all_reviews, name='get_all_reviews'),
+    path('app_reviews/<int:review_id>/', get_review_by_id, name='get_review_by_id'),
+    path('app_reviews/create/', create_review, name='create_review'),
+    path('app_reviews/<int:review_id>/update/', update_review, name='update_review'),
+    path('app_reviews/<int:review_id>/delete/', delete_review, name='delete_review'),
 
 ]

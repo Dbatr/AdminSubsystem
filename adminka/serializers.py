@@ -58,3 +58,15 @@ class TeamSerializer(serializers.ModelSerializer):
         model = Team
         fields = '__all__'
 
+
+class ApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Application
+        fields = '__all__'
+
+
+class AppReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = App_review
+        fields = '__all__'
+
