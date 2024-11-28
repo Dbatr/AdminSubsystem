@@ -2,6 +2,7 @@ from django.urls import path
 
 from adminka.views.app_reviews_views import *
 from adminka.views.applications_views import *
+from adminka.views.check_list_items_views import *
 from adminka.views.directions_views import *
 from adminka.views.efficiencies_views import *
 from adminka.views.profiles_views import *
@@ -75,5 +76,16 @@ urlpatterns = [
     path('tasks/create/', create_task, name='create_task'),
     path('tasks/<int:task_id>/update/', update_task, name='update_task'),
     path('tasks/<int:task_id>/delete/', delete_task, name='delete_task'),
+
+
+    path('checklist/', get_all_checklist_items_global, name='get_all_checklist_items_global'),
+    path('tasks/<int:task_id>/checklist/', get_all_checklist_items, name='get_all_checklist_items'),
+    path('tasks/<int:task_id>/checklist/<int:item_id>/', get_checklist_item_by_id,
+         name='get_checklist_item_by_id'),
+    path('tasks/<int:task_id>/checklist/create/', create_checklist_item, name='create_checklist_item'),
+    path('tasks/<int:task_id>/checklist/<int:item_id>/update/', update_checklist_item,
+         name='update_checklist_item'),
+    path('tasks/<int:task_id>/checklist/<int:item_id>/delete/', delete_checklist_item,
+         name='delete_checklist_item'),
 
 ]
