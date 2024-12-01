@@ -3,6 +3,7 @@ from django.urls import path
 from adminka.views.app_reviews_views import *
 from adminka.views.applications_views import *
 from adminka.views.check_list_items_views import *
+from adminka.views.customization_views import *
 from adminka.views.directions_views import *
 from adminka.views.efficiencies_views import *
 from adminka.views.profiles_views import *
@@ -87,5 +88,12 @@ urlpatterns = [
          name='update_checklist_item'),
     path('tasks/<int:task_id>/checklist/<int:item_id>/delete/', delete_checklist_item,
          name='delete_checklist_item'),
+
+
+    path('customizations/', get_all_customizations, name='get_all_customizations'),
+    path('customizations/task/<int:task_id>/', get_customizations_by_task, name='get_customizations_by_task'),
+    path('customizations/create/', create_customization, name='create_customization'),
+    path('customizations/<int:customization_id>/update/', update_customization, name='update_customization'),
+    path('customizations/<int:customization_id>/delete/', delete_customization, name='delete_customization'),
 
 ]

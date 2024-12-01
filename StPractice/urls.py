@@ -24,6 +24,8 @@ from rest_framework_simplejwt.views import (
 from adminka.views.registration_views import SimpleRegistrationView
 from adminka.views.views import *
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
@@ -39,3 +41,6 @@ urlpatterns = [
     path('adminka/', include('adminka.urls')),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

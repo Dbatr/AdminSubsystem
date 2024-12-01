@@ -85,5 +85,8 @@ class ChecklistItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-
+class CustomizationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customization
+        fields = '__all__'
 
