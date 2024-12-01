@@ -13,6 +13,7 @@ class AllUsersView(APIView):
     """
 
     @extend_schema(
+        tags=["Users"],
         responses=UserSerializer(many=True),
         description="Получение списка всех пользователей."
     )
@@ -28,6 +29,7 @@ class UserDetailView(APIView):
     """
 
     @extend_schema(
+        tags=["Users"],
         responses={200: UserSerializer, 404: 'Пользователь не найден.'},
         description="Получение данных пользователя по ID."
     )

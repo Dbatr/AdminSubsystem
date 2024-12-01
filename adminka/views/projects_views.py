@@ -6,7 +6,9 @@ from adminka.serializers import *
 from crm.models import *
 from django.shortcuts import get_object_or_404
 
-
+@extend_schema(
+    tags=["Projects"],
+)
 @api_view(['GET'])
 def get_all_projects(request):
     projects = Project.objects.all()
@@ -14,6 +16,7 @@ def get_all_projects(request):
     return Response(serializer.data)
 
 @extend_schema(
+    tags=["Projects"],
     responses={200: ProjectSerializer, 404: 'Project not found'}
 )
 @api_view(['GET'])
@@ -24,6 +27,7 @@ def get_project_by_id(request, project_id):
 
 
 @extend_schema(
+    tags=["Projects"],
     request=ProjectSerializer,
     responses={201: ProjectSerializer, 400: 'Invalid data'}
 )
@@ -36,6 +40,7 @@ def create_project(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @extend_schema(
+    tags=["Projects"],
     request=ProjectSerializer,
     responses={200: ProjectSerializer, 400: 'Invalid data', 404: 'Project not found'}
 )
@@ -50,6 +55,7 @@ def update_project(request, project_id):
 
 
 @extend_schema(
+    tags=["Projects"],
     responses={204: 'No Content', 404: 'Project not found'}
 )
 @api_view(['DELETE'])

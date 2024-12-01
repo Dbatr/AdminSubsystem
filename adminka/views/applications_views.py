@@ -6,7 +6,9 @@ from adminka.serializers import *
 from crm.models import *
 from django.shortcuts import get_object_or_404
 
-
+@extend_schema(
+    tags=["Applications"],
+)
 @api_view(['GET'])
 def get_all_applications(request):
     applications = Application.objects.all()
@@ -15,6 +17,7 @@ def get_all_applications(request):
 
 
 @extend_schema(
+    tags=["Applications"],
     responses={200: ApplicationSerializer, 404: 'Application not found'}
 )
 @api_view(['GET'])
@@ -25,6 +28,7 @@ def get_application_by_id(request, application_id):
 
 
 @extend_schema(
+    tags=["Applications"],
     request=ApplicationSerializer,
     responses={201: ApplicationSerializer, 400: 'Invalid data'}
 )
@@ -38,6 +42,7 @@ def create_application(request):
 
 
 @extend_schema(
+    tags=["Applications"],
     request=ApplicationSerializer,
     responses={200: ApplicationSerializer, 400: 'Invalid data', 404: 'Application not found'}
 )
@@ -52,6 +57,7 @@ def update_application(request, application_id):
 
 
 @extend_schema(
+    tags=["Applications"],
     responses={204: 'No Content', 404: 'Application not found'}
 )
 @api_view(['DELETE'])

@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 
 
 @extend_schema(
+    tags=["Directions"],
     responses={200: DirectionSerializer}
 )
 @api_view(['GET'])
@@ -18,6 +19,7 @@ def get_all_directions(request):
 
 
 @extend_schema(
+    tags=["Directions"],
     responses={200: DirectionSerializer, 404: 'Direction not found'}
 )
 @api_view(['GET'])
@@ -28,6 +30,7 @@ def get_direction_by_id(request, direction_id):
 
 
 @extend_schema(
+    tags=["Directions"],
     request=DirectionSerializer,
     responses={201: DirectionSerializer, 400: 'Invalid data'}
 )
@@ -41,6 +44,7 @@ def create_direction(request):
 
 
 @extend_schema(
+    tags=["Directions"],
     request=DirectionSerializer,
     responses={200: DirectionSerializer, 400: 'Invalid data', 404: 'Direction not found'}
 )
@@ -55,6 +59,7 @@ def update_direction(request, direction_id):
 
 
 @extend_schema(
+    tags=["Directions"],
     responses={204: 'No Content', 404: 'Direction not found'}
 )
 @api_view(['DELETE'])

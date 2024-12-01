@@ -6,7 +6,9 @@ from adminka.serializers import *
 from canban.models import *
 from django.shortcuts import get_object_or_404
 
-
+@extend_schema(
+    tags=["Tasks"],
+)
 @api_view(['GET'])
 def get_all_tasks(request):
     """
@@ -18,6 +20,7 @@ def get_all_tasks(request):
 
 
 @extend_schema(
+    tags=["Tasks"],
     responses={200: TaskSerializer, 404: 'Task not found'}
 )
 @api_view(['GET'])
@@ -31,6 +34,7 @@ def get_task_by_id(request, task_id):
 
 
 @extend_schema(
+    tags=["Tasks"],
     request=TaskSerializer,
     responses={201: TaskSerializer, 400: 'Invalid data'}
 )
@@ -47,6 +51,7 @@ def create_task(request):
 
 
 @extend_schema(
+    tags=["Tasks"],
     request=TaskSerializer,
     responses={200: TaskSerializer, 400: 'Invalid data', 404: 'Task not found'}
 )
@@ -64,6 +69,7 @@ def update_task(request, task_id):
 
 
 @extend_schema(
+    tags=["Tasks"],
     responses={204: 'No Content', 404: 'Task not found'}
 )
 @api_view(['DELETE'])

@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 
 
 @extend_schema(
+    tags=["Teams"],
     responses={200: TeamSerializer}
 )
 @api_view(['GET'])
@@ -18,6 +19,7 @@ def get_all_teams(request):
 
 
 @extend_schema(
+    tags=["Teams"],
     responses={200: TeamSerializer, 404: 'Team not found'}
 )
 @api_view(['GET'])
@@ -28,6 +30,7 @@ def get_team_by_id(request, team_id):
 
 
 @extend_schema(
+    tags=["Teams"],
     request=TeamSerializer,
     responses={201: TeamSerializer, 400: 'Invalid data'}
 )
@@ -41,6 +44,7 @@ def create_team(request):
 
 
 @extend_schema(
+    tags=["Teams"],
     request=TeamSerializer,
     responses={200: TeamSerializer, 400: 'Invalid data', 404: 'Team not found'}
 )
@@ -55,6 +59,7 @@ def update_team(request, team_id):
 
 
 @extend_schema(
+    tags=["Teams"],
     responses={204: 'No Content', 404: 'Team not found'}
 )
 @api_view(['DELETE'])

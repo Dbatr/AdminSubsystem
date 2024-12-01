@@ -7,7 +7,10 @@ from canban.models import *
 from django.shortcuts import get_object_or_404
 
 
-
+@extend_schema(
+    tags=["Checklist items"],
+    description="Получение всех элементов чек-листов без привязки к конкретной задаче.",
+)
 @api_view(['GET'])
 def get_all_checklist_items_global(request):
     """
@@ -17,7 +20,10 @@ def get_all_checklist_items_global(request):
     serializer = ChecklistItemSerializer(checklist_items, many=True)
     return Response(serializer.data)
 
-
+@extend_schema(
+    tags=["Checklist items"],
+    description="Получение всех элементов чек-листа для конкретной задачи."
+)
 @api_view(['GET'])
 def get_all_checklist_items(request, task_id):
     """
@@ -29,7 +35,9 @@ def get_all_checklist_items(request, task_id):
 
 
 @extend_schema(
-    responses={200: ChecklistItemSerializer, 404: 'Checklist item not found'}
+    tags=["Checklist items"],
+    responses={200: ChecklistItemSerializer, 404: 'Checklist item not found'},
+    description="Получение элемента чек-листа по ID."
 )
 @api_view(['GET'])
 def get_checklist_item_by_id(request, task_id, item_id):
@@ -42,8 +50,10 @@ def get_checklist_item_by_id(request, task_id, item_id):
 
 
 @extend_schema(
+    tags=["Checklist items"],
     request=ChecklistItemSerializer,
-    responses={201: ChecklistItemSerializer, 400: 'Invalid data'}
+    responses={201: ChecklistItemSerializer, 400: 'Invalid data'},
+    description="Создание нового элемента чек-листа для задачи."
 )
 @api_view(['POST'])
 def create_checklist_item(request, task_id):
@@ -60,8 +70,10 @@ def create_checklist_item(request, task_id):
 
 
 @extend_schema(
+    tags=["Checklist items"],
     request=ChecklistItemSerializer,
-    responses={200: ChecklistItemSerializer, 400: 'Invalid data', 404: 'Checklist item not found'}
+    responses={200: ChecklistItemSerializer, 400: 'Invalid data', 404: 'Checklist item not found'},
+    description="Обновление элемента чек-листа."
 )
 @api_view(['PUT'])
 def update_checklist_item(request, task_id, item_id):
@@ -77,7 +89,9 @@ def update_checklist_item(request, task_id, item_id):
 
 
 @extend_schema(
-    responses={204: 'No Content', 404: 'Checklist item not found'}
+    tags=["Checklist items"],
+    responses={204: 'No Content', 404: 'Checklist item not found'},
+    description="Удаление элемента чек-листа."
 )
 @api_view(['DELETE'])
 def delete_checklist_item(request, task_id, item_id):

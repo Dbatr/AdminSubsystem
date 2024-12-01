@@ -13,6 +13,7 @@ class AllProfilesView(APIView):
     """
 
     @extend_schema(
+        tags=["Profiles"],
         responses=ProfileSerializer(many=True),
         description="Получение списка всех профилей."
     )
@@ -26,6 +27,7 @@ class ProfileDetailView(APIView):
     permission_classes = [IsOrganizerOrSupervisor]  # Потребуется аутентификация
 
     @extend_schema(
+        tags=["Profiles"],
         parameters=[int],
         responses={200: ProfileSerializer, 404: 'Профиль не найден.'},
         description="Получение профиля по ID."
@@ -57,6 +59,7 @@ class AdminProfileView(APIView):
     """
 
     @extend_schema(
+        tags=["Profiles"],
         request=ProfileSerializer,
         responses={201: ProfileSerializer, 400: 'Ошибка валидации', 404: 'Пользователь не найден.'},
         description="Создание профиля для пользователя."
@@ -89,6 +92,7 @@ class AdminProfileView(APIView):
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
+        tags=["Profiles"],
         request=ProfileSerializer,
         responses={200: ProfileSerializer, 404: 'Профиль не найден.'},
         description="Полное обновление профиля."
@@ -119,6 +123,7 @@ class AdminProfileView(APIView):
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @extend_schema(
+        tags=["Profiles"],
         request=ProfileSerializer(partial=True),
         responses={200: ProfileSerializer, 404: 'Профиль не найден.'},
         description="Частичное обновление профиля."

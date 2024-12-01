@@ -6,7 +6,9 @@ from adminka.serializers import *
 from crm.models import *
 from django.shortcuts import get_object_or_404
 
-
+@extend_schema(
+    tags=["App reviews"],
+)
 @api_view(['GET'])
 def get_all_reviews(request):
     reviews = App_review.objects.all()
@@ -15,6 +17,7 @@ def get_all_reviews(request):
 
 
 @extend_schema(
+    tags=["App reviews"],
     responses={200: AppReviewSerializer, 404: 'Review not found'}
 )
 @api_view(['GET'])
@@ -25,6 +28,7 @@ def get_review_by_id(request, review_id):
 
 
 @extend_schema(
+    tags=["App reviews"],
     request=AppReviewSerializer,
     responses={201: AppReviewSerializer, 400: 'Invalid data'}
 )
@@ -38,6 +42,7 @@ def create_review(request):
 
 
 @extend_schema(
+    tags=["App reviews"],
     request=AppReviewSerializer,
     responses={200: AppReviewSerializer, 400: 'Invalid data', 404: 'Review not found'}
 )
@@ -52,6 +57,7 @@ def update_review(request, review_id):
 
 
 @extend_schema(
+    tags=["App reviews"],
     responses={204: 'No Content', 404: 'Review not found'}
 )
 @api_view(['DELETE'])

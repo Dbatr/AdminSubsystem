@@ -8,6 +8,7 @@ from crm.models import *
 
 # Получение всех навыков
 @extend_schema(
+    tags=["Skills"],
     responses=SkillSerializer(many=True),
     description="Получение всех навыков."
 )
@@ -20,6 +21,7 @@ def get_all_skills(request):
 
 # Получение навыка по ID
 @extend_schema(
+    tags=["Skills"],
     parameters=[int],
     responses={200: SkillSerializer, 404: 'Навык не найден.'},
     description="Получение навыка по ID."
@@ -36,6 +38,7 @@ def get_skill_by_id(request, pk):
 
 # Добавление нового навыка
 @extend_schema(
+    tags=["Skills"],
     request=SkillSerializer,
     responses={201: SkillSerializer, 400: 'Ошибка валидации'},
     description="Добавление нового навыка."
@@ -52,6 +55,7 @@ def add_skill(request):
 
 # Удаление навыка
 @extend_schema(
+    tags=["Skills"],
     parameters=[int],
     responses={204: None, 404: 'Навык не найден.'},
     description="Удаление навыка."

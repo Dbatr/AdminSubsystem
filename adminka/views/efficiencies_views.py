@@ -6,7 +6,9 @@ from adminka.serializers import *
 from crm.models import *
 from django.shortcuts import get_object_or_404
 
-
+@extend_schema(
+    tags=["Efficiencies"],
+)
 @api_view(['GET'])
 def get_all_efficiencies(request):
     efficiencies = Efficiency.objects.all()
@@ -15,6 +17,7 @@ def get_all_efficiencies(request):
 
 
 @extend_schema(
+    tags=["Efficiencies"],
     responses={200: EfficiencySerializer, 404: 'Efficiency not found'}
 )
 @api_view(['GET'])
@@ -25,6 +28,7 @@ def get_efficiency_by_user(request, user_id):
 
 
 @extend_schema(
+    tags=["Efficiencies"],
     request=EfficiencySerializer,
     responses={201: EfficiencySerializer, 400: 'Invalid data'}
 )
@@ -38,6 +42,7 @@ def create_efficiency(request):
 
 
 @extend_schema(
+    tags=["Efficiencies"],
     request=EfficiencySerializer,
     responses={200: EfficiencySerializer, 400: 'Invalid data', 404: 'Efficiency not found'}
 )
@@ -52,6 +57,7 @@ def update_efficiency(request, user_id):
 
 
 @extend_schema(
+    tags=["Efficiencies"],
     request=EfficiencySerializer,
     responses={200: EfficiencySerializer, 400: 'Invalid data', 404: 'Efficiency not found'}
 )
@@ -66,6 +72,7 @@ def partial_update_efficiency(request, user_id):
 
 
 @extend_schema(
+    tags=["Efficiencies"],
     responses={204: 'Efficiency deleted', 404: 'Efficiency not found'}
 )
 @api_view(['DELETE'])
