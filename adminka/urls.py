@@ -9,6 +9,8 @@ from adminka.views.efficiencies_views import *
 from adminka.views.profiles_views import *
 from adminka.views.projects_views import *
 from adminka.views.skills_views import *
+from adminka.views.status_views import *
+from adminka.views.tags_views import *
 from adminka.views.tasks_views import *
 from adminka.views.teams_views import *
 from adminka.views.users_views import *
@@ -95,5 +97,18 @@ urlpatterns = [
     path('customizations/create/', create_customization, name='create_customization'),
     path('customizations/<int:customization_id>/update/', update_customization, name='update_customization'),
     path('customizations/<int:customization_id>/delete/', delete_customization, name='delete_customization'),
+
+    path('statuses/', get_all_statuses, name='get_all_statuses'),
+    path('statuses/direction/<int:direction_id>/', get_statuses_by_direction, name='get_statuses_by_direction'),
+    path('statuses/create/', create_status, name='create_status'),
+    path('statuses/update/<int:status_id>/', update_status, name='update_status'),
+    path('statuses/delete/<int:status_id>/', delete_status, name='delete_status'),
+
+    path('tags/', get_all_tags, name='get_all_tags'),
+    path('tags/task/<int:task_id>/', get_tags_by_task, name='get_tags_by_task'),
+    path('tags/create/', create_tag, name='create_tag'),
+    path('tags/update/<int:tag_id>/', update_tag, name='update_tag'),
+    path('tags/delete/<int:tag_id>/', delete_tag, name='delete_tag'),
+    path('tags/<str:tag_name>/tasks/', get_tasks_by_tag_name, name='tasks_by_tag_name'),
 
 ]

@@ -90,3 +90,14 @@ class CustomizationSerializer(serializers.ModelSerializer):
         model = Customization
         fields = '__all__'
 
+
+class StatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Status
+        fields = ['id', 'direction', 'name']
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'task', 'name']
