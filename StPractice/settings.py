@@ -17,6 +17,8 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+
 # Настройки для медиа-файлов
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
