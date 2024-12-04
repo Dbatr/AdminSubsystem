@@ -60,7 +60,7 @@ class AdminProfileView(APIView):
 
     @extend_schema(
         tags=["Profiles"],
-        request=ProfileSerializer,
+        request=ProfileSerializer_post_put_patch,
         responses={201: ProfileSerializer, 400: 'Ошибка валидации', 404: 'Пользователь не найден.'},
         description="Создание профиля для пользователя."
     )
@@ -74,15 +74,16 @@ class AdminProfileView(APIView):
 
             # Проверяем, существует ли уже профиль
             if hasattr(user, 'profile'):
-                return Response({"detail": "У данного пользователя уже есть профиль."}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"detail": "У данного пользователя уже есть профиль."},
+                                status=status.HTTP_400_BAD_REQUEST)
 
             # Создаем профиль для пользователя
-            data = request.data
-            data['author'] = user.id  # Привязываем профиль к указанному пользователю
-            serializer = ProfileSerializer(data=data)
+            serializer = ProfileSerializer_post_put_patch(data=request.data)
             if serializer.is_valid():
-                serializer.save()
-                return Response({"message": "Профиль успешно создан.", "data": serializer.data}, status=status.HTTP_201_CREATED)
+                # Указываем автора профиля из user_id
+                serializer.save(author=user)
+                return Response({"message": "Профиль успешно создан.", "data": serializer.data},
+                                status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         except User.DoesNotExist:
@@ -93,7 +94,7 @@ class AdminProfileView(APIView):
 
     @extend_schema(
         tags=["Profiles"],
-        request=ProfileSerializer,
+        request=ProfileSerializer_post_put_patch,
         responses={200: ProfileSerializer, 404: 'Профиль не найден.'},
         description="Полное обновление профиля."
     )
@@ -107,7 +108,7 @@ class AdminProfileView(APIView):
             profile = user.profile
 
             # Полное обновление профиля
-            serializer = ProfileSerializer(profile, data=request.data)
+            serializer = ProfileSerializer_post_put_patch(profile, data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response({"message": "Профиль успешно обновлен.", "data": serializer.data}, status=status.HTTP_200_OK)
@@ -124,7 +125,7 @@ class AdminProfileView(APIView):
 
     @extend_schema(
         tags=["Profiles"],
-        request=ProfileSerializer(partial=True),
+        request=ProfileSerializer_post_put_patch(partial=True),
         responses={200: ProfileSerializer, 404: 'Профиль не найден.'},
         description="Частичное обновление профиля."
     )
@@ -138,7 +139,7 @@ class AdminProfileView(APIView):
             profile = user.profile
 
             # Частичное обновление профиля
-            serializer = ProfileSerializer(profile, data=request.data, partial=True)
+            serializer = ProfileSerializer_post_put_patch(profile, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
                 return Response({"message": "Профиль успешно обновлен.", "data": serializer.data}, status=status.HTTP_200_OK)

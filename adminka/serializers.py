@@ -25,6 +25,12 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['author', 'photo', 'telegram', 'email', 'surname', 'name', 'patronymic', 'course', 'university', 'skills']
 
 
+class ProfileSerializer_post_put_patch(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['photo', 'telegram', 'email', 'surname', 'name', 'patronymic', 'course', 'university', 'skills']
+
+
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
@@ -41,6 +47,12 @@ class EfficiencySerializer(serializers.ModelSerializer):
     class Meta:
         model = Efficiency
         fields = ['user', 'count', 'rating']
+
+
+class EfficiencySerializer_put_patch(serializers.ModelSerializer):
+    class Meta:
+        model = Efficiency
+        fields = ['count', 'rating']
 
 
 class ProjectSerializer(serializers.ModelSerializer):

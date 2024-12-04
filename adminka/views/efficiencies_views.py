@@ -43,13 +43,13 @@ def create_efficiency(request):
 
 @extend_schema(
     tags=["Efficiencies"],
-    request=EfficiencySerializer,
+    request=EfficiencySerializer_put_patch,
     responses={200: EfficiencySerializer, 400: 'Invalid data', 404: 'Efficiency not found'}
 )
 @api_view(['PUT'])
 def update_efficiency(request, user_id):
     efficiency = get_object_or_404(Efficiency, user_id=user_id)
-    serializer = EfficiencySerializer(efficiency, data=request.data)
+    serializer = EfficiencySerializer_put_patch(efficiency, data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -58,13 +58,13 @@ def update_efficiency(request, user_id):
 
 @extend_schema(
     tags=["Efficiencies"],
-    request=EfficiencySerializer,
+    request=EfficiencySerializer_put_patch,
     responses={200: EfficiencySerializer, 400: 'Invalid data', 404: 'Efficiency not found'}
 )
 @api_view(['PATCH'])
 def partial_update_efficiency(request, user_id):
     efficiency = get_object_or_404(Efficiency, user_id=user_id)
-    serializer = EfficiencySerializer(efficiency, data=request.data, partial=True)
+    serializer = EfficiencySerializer_put_patch(efficiency, data=request.data, partial=True)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

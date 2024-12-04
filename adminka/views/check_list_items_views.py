@@ -56,12 +56,17 @@ def get_checklist_item_by_id(request, task_id, item_id):
     description="Создание нового элемента чек-листа для задачи."
 )
 @api_view(['POST'])
-def create_checklist_item(request, task_id):
+def create_checklist_item(request):
     """
     Создание нового элемента чек-листа для задачи.
     """
     data = request.data
-    data['task'] = task_id  # Указываем задачу, к которой привязан чек-лист
+    task_id = data.get('task')
+    if task_id is None:
+        return Response({"detail": "Task ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Указываем задачу, к которой привязан чек-лист
+    data['task'] = task_id
     serializer = ChecklistItemSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
@@ -76,11 +81,16 @@ def create_checklist_item(request, task_id):
     description="Обновление элемента чек-листа."
 )
 @api_view(['PUT'])
-def update_checklist_item(request, task_id, item_id):
+def update_checklist_item(request, item_id):
     """
     Обновление элемента чек-листа.
     """
-    checklist_item = get_object_or_404(ChecklistItem, task_id=task_id, id=item_id)
+    task_id = request.data.get('task')
+    if task_id is None:
+        return Response({"detail": "Task ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+    checklist_item = get_object_or_404(ChecklistItem, id=item_id)
+
     serializer = ChecklistItemSerializer(checklist_item, data=request.data)
     if serializer.is_valid():
         serializer.save()
