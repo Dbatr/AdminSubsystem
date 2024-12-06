@@ -3,11 +3,14 @@ from django.urls import path
 from adminka.views.app_reviews_views import *
 from adminka.views.applications_views import *
 from adminka.views.check_list_items_views import *
+from adminka.views.comments_views import *
 from adminka.views.customization_views import *
 from adminka.views.directions_views import *
 from adminka.views.efficiencies_views import *
+from adminka.views.grades_views import *
 from adminka.views.profiles_views import *
 from adminka.views.projects_views import *
+from adminka.views.results_views import *
 from adminka.views.skills_views import *
 from adminka.views.status_views import *
 from adminka.views.tags_views import *
@@ -110,5 +113,26 @@ urlpatterns = [
     path('tags/update/<int:tag_id>/', update_tag, name='update_tag'),
     path('tags/delete/<int:tag_id>/', delete_tag, name='delete_tag'),
     path('tags/<str:tag_name>/tasks/', get_tasks_by_tag_name, name='tasks_by_tag_name'),
+
+
+    path('results/', get_all_results, name='get_all_results'),
+    path('results/<int:result_id>/', get_result_by_id, name='get_result_by_id'),
+    path('results/create/', create_result, name='create_result'),
+    path('results/<int:result_id>/update/', update_result, name='update_result'),
+    path('results/<int:result_id>/delete/', delete_result, name='delete_result'),
+
+
+    path('grades/', get_all_grades, name='get_all_grades'),
+    path('grades/<int:grade_id>/', get_grade_by_id, name='get_grade_by_id'),
+    path('grades/create/', create_grade, name='create_grade'),
+    path('grades/<int:grade_id>/update/', update_grade, name='update_grade'),
+    path('grades/<int:grade_id>/delete/', delete_grade, name='delete_grade'),
+
+
+    path('comments/', get_all_comments, name='get_all_comments'),
+    path('comments/task/<int:task_id>/', get_comments_by_task, name='get_comments_by_task'),
+    path('comments/create/', create_comment, name='create_comment'),
+    path('comments/<int:comment_id>/update/', update_comment, name='update_comment'),
+    path('comments/<int:comment_id>/delete/', delete_comment, name='delete_comment'),
 
 ]

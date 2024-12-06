@@ -60,7 +60,7 @@ class Grade(models.Model):
     review = models.TextField(verbose_name="Отзыв", max_length=10000)
 
     def __str__(self):
-        return self.grade
+        return f"Grade: {self.grade}, Review: {self.review[:20]}"
 
 
 class Comment(models.Model):
