@@ -131,3 +131,14 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'task', 'author', 'content']
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields = ['id', 'name']
+
+
+class AssignRoleSerializer(serializers.Serializer):
+    user_id = serializers.IntegerField(required=True, help_text="ID пользователя")
+    role_name = serializers.ChoiceField(choices=[choice[0] for choice in Role.ROLE_CHOISES], help_text="Название роли")

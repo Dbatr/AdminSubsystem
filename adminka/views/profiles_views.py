@@ -1,5 +1,6 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from adminka.permissions import IsOrganizerOrSupervisor
@@ -151,5 +152,35 @@ class AdminProfileView(APIView):
         except Profile.DoesNotExist:
             return Response({"detail": "Профиль не найден."}, status=status.HTTP_404_NOT_FOUND)
 
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class RoleByTokenView(APIView):
+    """
+    Получение роли пользователя по токену.
+    """
+    permission_classes = [IsOrganizerOrSupervisor]
+
+    @extend_schema(
+        tags=["Roles"],
+        responses={200: RoleSerializer(many=True), 404: 'Роль не найдена.'},
+        description="Получение роли пользователя по токену."
+    )
+    def get(self, request):
+        try:
+            # Получаем профиль текущего пользователя
+            profile = request.user.profile
+
+            # Получаем связанные роли
+            roles = profile.users.all()
+            if not roles:
+                return Response({"detail": "Роли не найдены."}, status=status.HTTP_404_NOT_FOUND)
+
+            # Сериализуем роли
+            serializer = RoleSerializer(roles, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except AttributeError:
+            return Response({"detail": "У пользователя нет профиля."}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

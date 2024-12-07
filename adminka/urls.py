@@ -11,6 +11,7 @@ from adminka.views.grades_views import *
 from adminka.views.profiles_views import *
 from adminka.views.projects_views import *
 from adminka.views.results_views import *
+from adminka.views.roles_views import *
 from adminka.views.skills_views import *
 from adminka.views.status_views import *
 from adminka.views.tags_views import *
@@ -30,6 +31,16 @@ urlpatterns = [
     path('profile/', ProfileDetailView.as_view(), name='profile_detail'),  # Для просмотра профиля текущего пользователя
     path('profile/<int:id>/', ProfileDetailView.as_view(), name='profile_detail_other'),  # Для просмотра профиля по id
     path('profile/create/<int:user_id>/', AdminProfileView.as_view(), name='admin_create_profile'),  # Создание профиля для юзера или обновление
+    path('profile/get_role/', RoleByTokenView.as_view(), name='get_role'),
+
+
+    path('roles/assign/', assign_role_to_user, name='assign_role_to_user'),
+    path('roles/', get_all_roles, name='get_all_roles'),
+    path('roles/<int:role_id>/', get_role_by_id, name='get_role_by_id'),
+    path('roles/create/', create_role, name='create_role'),
+    path('roles/<int:role_id>/delete/', delete_role, name='delete_role'),
+    path('roles/valid-options/', get_valid_roles, name='get_valid_roles'),
+
 
     path('skills/', get_all_skills, name='get_all_skills'),
     path('skills/<int:pk>/', get_skill_by_id, name='get_skill_by_id'),
