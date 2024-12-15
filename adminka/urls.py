@@ -73,6 +73,7 @@ urlpatterns = [
     path('teams/create/', create_team, name='create_team'),
     path('teams/<int:team_id>/update/', update_team, name='update_team'),
     path('teams/<int:team_id>/delete/', delete_team, name='delete_team'),
+    path('teams/me_curator/', get_curator_teams, name='get_curator_teams'),
 
 
     path('applications/', get_all_applications, name='get_all_applications'),

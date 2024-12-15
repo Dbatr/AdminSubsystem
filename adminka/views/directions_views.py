@@ -1,10 +1,11 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from adminka.serializers import *
 from crm.models import *
 from django.shortcuts import get_object_or_404
+from adminka.permissions import *
 
 
 @extend_schema(
@@ -35,6 +36,7 @@ def get_direction_by_id(request, direction_id):
     responses={201: DirectionSerializer, 400: 'Invalid data'}
 )
 @api_view(['POST'])
+@permission_classes([IsOrganisator_RukovodOrSupervisor])
 def create_direction(request):
     serializer = DirectionSerializer(data=request.data)
     if serializer.is_valid():
@@ -49,6 +51,7 @@ def create_direction(request):
     responses={200: DirectionSerializer, 400: 'Invalid data', 404: 'Direction not found'}
 )
 @api_view(['PUT'])
+@permission_classes([IsOrganisator_RukovodOrSupervisor])
 def update_direction(request, direction_id):
     direction = get_object_or_404(Direction, id=direction_id)
     serializer = DirectionSerializer(direction, data=request.data)
@@ -63,6 +66,7 @@ def update_direction(request, direction_id):
     responses={204: 'No Content', 404: 'Direction not found'}
 )
 @api_view(['DELETE'])
+@permission_classes([IsOrganisator_RukovodOrSupervisor])
 def delete_direction(request, direction_id):
     direction = get_object_or_404(Direction, id=direction_id)
     direction.delete()

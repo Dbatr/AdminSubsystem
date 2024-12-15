@@ -1,15 +1,18 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from adminka.serializers import *
 from crm.models import *
 from django.shortcuts import get_object_or_404
+from adminka.permissions import *
+
 
 @extend_schema(
     tags=["Applications"],
 )
 @api_view(['GET'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def get_all_applications(request):
     applications = Application.objects.all()
     serializer = ApplicationSerializer(applications, many=True)
@@ -21,6 +24,7 @@ def get_all_applications(request):
     responses={200: ApplicationSerializer, 404: 'Application not found'}
 )
 @api_view(['GET'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def get_application_by_id(request, application_id):
     application = get_object_or_404(Application, id=application_id)
     serializer = ApplicationSerializer(application)
@@ -33,6 +37,7 @@ def get_application_by_id(request, application_id):
     responses={201: ApplicationSerializer, 400: 'Invalid data'}
 )
 @api_view(['POST'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def create_application(request):
     serializer = ApplicationSerializer(data=request.data)
     if serializer.is_valid():
@@ -47,6 +52,7 @@ def create_application(request):
     responses={200: ApplicationSerializer, 400: 'Invalid data', 404: 'Application not found'}
 )
 @api_view(['PUT'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def update_application(request, application_id):
     application = get_object_or_404(Application, id=application_id)
     serializer = ApplicationSerializer(application, data=request.data)
@@ -61,6 +67,7 @@ def update_application(request, application_id):
     responses={204: 'No Content', 404: 'Application not found'}
 )
 @api_view(['DELETE'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def delete_application(request, application_id):
     application = get_object_or_404(Application, id=application_id)
     application.delete()

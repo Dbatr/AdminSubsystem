@@ -1,10 +1,11 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from adminka.serializers import *
 from canban.models import *
 from django.shortcuts import get_object_or_404
+from adminka.permissions import *
 
 
 @extend_schema(
@@ -44,6 +45,7 @@ def get_role_by_id(request, role_id):
     description="Создание новой роли."
 )
 @api_view(['POST'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def create_role(request):
     """
     Создание новой роли.
@@ -61,6 +63,7 @@ def create_role(request):
     description="Удаление роли по ID."
 )
 @api_view(['DELETE'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def delete_role(request, role_id):
     """
     Удаление роли по ID.
@@ -91,6 +94,7 @@ def get_valid_roles(request):
     description="Назначение роли пользователю."
 )
 @api_view(['POST'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def assign_role_to_user(request):
     """
     Назначение роли пользователю.

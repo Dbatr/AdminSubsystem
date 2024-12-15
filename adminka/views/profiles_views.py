@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from adminka.permissions import IsOrganizerOrSupervisor
+from adminka.permissions import *
 from adminka.serializers import *
 from crm.models import *
 
@@ -58,7 +58,7 @@ class AdminProfileView(APIView):
     """
     API для создания, полного и частичного обновления профиля пользователя.
     """
-
+    permission_classes = [IsOrganisatorOrSupervisor]
     @extend_schema(
         tags=["Profiles"],
         request=ProfileSerializer_post_put_patch,

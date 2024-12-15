@@ -1,9 +1,10 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from adminka.serializers import *
 from crm.models import *
+from adminka.permissions import *
 
 
 # Получение всех навыков
@@ -44,6 +45,7 @@ def get_skill_by_id(request, pk):
     description="Добавление нового навыка."
 )
 @api_view(['POST'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def add_skill(request):
     if request.method == 'POST':
         serializer = SkillSerializer(data=request.data)
@@ -61,6 +63,7 @@ def add_skill(request):
     description="Удаление навыка."
 )
 @api_view(['DELETE'])
+@permission_classes([IsOrganisatorOrSupervisor])
 def delete_skill(request, pk):
     try:
         skill = Skill.objects.get(pk=pk)
