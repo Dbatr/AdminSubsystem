@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from django.contrib.auth.models import User
 
-from crm.models import Role, Profile
+from crm.models import Role, Profile, Skill
 
 
 class RegistrationTests(APITestCase):
@@ -193,3 +193,64 @@ class UserViewTests(APITestCase):
         response = self.client.get(url, HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class SkillTests(APITestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='user1', password='password123', email='user1@example.com')
+        self.profile = Profile.objects.create(author=self.user, surname='Иванов', name='Иван', course=1)
+        self.role = Role.objects.create(name='Организатор')
+        self.role.users.add(self.profile)
+
+        self.skill1 = Skill.objects.create(name='Skill 1')
+        self.skill2 = Skill.objects.create(name='Skill 2')
+        self.skill3 = Skill.objects.create(name='Skill 3')
+
+        url_obtain = reverse('token_obtain_pair')
+        response = self.client.post(url_obtain, {'username': 'user1', 'password': 'password123'}, format='json')
+        self.access_token = response.data['access']
+
+        self.client.credentials(HTTP_AUTHORIZATION='Bearer ' + self.access_token)
+
+        self.url = reverse('get_all_skills')
+        self.skill_url1 = reverse('get_skill_by_id', args=[self.skill1.pk])
+        self.skill_url2 = reverse('get_skill_by_id', args=[self.skill2.pk])
+        self.skill_url3 = reverse('get_skill_by_id', args=[self.skill3.pk])
+        self.add_skill_url = reverse('add_skill')
+        self.delete_skill_url = reverse('delete_skill', args=[self.skill1.pk])  # Удаление первого навыка
+
+    def test_get_all_skills(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3)  # Проверяем, что три навыка возвращаются
+
+    def test_get_skill_by_id(self):
+        response = self.client.get(self.skill_url1)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['name'], self.skill1.name)
+
+    def test_get_skill_by_invalid_id(self):
+        response = self.client.get(reverse('get_skill_by_id', args=[999]))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data['detail'], 'Навык не найден.')
+
+    def test_add_skill(self):
+        data = {'name': 'New Skill'}
+        response = self.client.post(self.add_skill_url, data)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Skill.objects.count(), 4)
+
+    def test_add_skill_invalid(self):
+        data = {'name': ''}
+        response = self.client.post(self.add_skill_url, data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_delete_skill(self):
+        response = self.client.delete(self.delete_skill_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Skill.objects.count(), 2)
+
+    def test_delete_skill_invalid(self):
+        response = self.client.delete(reverse('delete_skill', args=[999]))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data['detail'], 'Навык не найден.')
