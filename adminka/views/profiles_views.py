@@ -1,4 +1,5 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.views import APIView
@@ -15,11 +16,32 @@ class AllProfilesView(APIView):
 
     @extend_schema(
         tags=["Profiles"],
+        parameters=[
+            OpenApiParameter(name='name', type=OpenApiTypes.STR, description='Фильтрация по имени', required=False),
+            OpenApiParameter(name='email', type=OpenApiTypes.STR, description='Фильтрация по email', required=False),
+            OpenApiParameter(name='university', type=OpenApiTypes.STR, description='Фильтрация по университету',
+                             required=False),
+            OpenApiParameter(name='telegram', type=OpenApiTypes.STR, description='Фильтрация по Telegram',
+                             required=False),
+            OpenApiParameter(name='surname', type=OpenApiTypes.STR, description='Фильтрация по фамилии',
+                             required=False),
+            OpenApiParameter(name='patronymic', type=OpenApiTypes.STR, description='Фильтрация по отчеству',
+                             required=False),
+            OpenApiParameter(name='course', type=OpenApiTypes.STR, description='Фильтрация по курсу', required=False),
+            OpenApiParameter(name='skills', type=OpenApiTypes.STR, description='Фильтрация по навыкам', required=False),
+        ],
         responses=ProfileSerializer(many=True),
-        description="Получение списка всех профилей."
+        description="Получение списка всех профилей. Можно фильтровать по полям, передавая параметры в запросе."
     )
     def get(self, request):
+
+        filter_params = {key: value for key, value in request.query_params.items() if value}
+
         profiles = Profile.objects.all()
+
+        if filter_params:
+            profiles = profiles.filter(**filter_params)
+
         serializer = ProfileSerializer(profiles, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
