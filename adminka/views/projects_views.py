@@ -1,3 +1,4 @@
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -35,7 +36,12 @@ def get_project_by_id(request, project_id):
 @api_view(['POST'])
 @permission_classes([IsOrganisator_RukovodOrSupervisor])
 def create_project(request):
-    serializer = ProjectSerializer(data=request.data)
+
+    data = request.data.copy()
+    if 'start' not in data or not data['start']:
+        data['start'] = timezone.now().date()
+
+    serializer = ProjectSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

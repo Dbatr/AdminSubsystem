@@ -59,7 +59,9 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         fields = ['id', 'name', 'description', 'author', 'supervisor', 'curators', 'students', 'link', 'start', 'end']
-
+        extra_kwargs = {
+            'start': {'required': False},
+        }
 
 class DirectionSerializer(serializers.ModelSerializer):
     class Meta:
