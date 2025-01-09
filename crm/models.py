@@ -58,7 +58,7 @@ class Project(models.Model):
     curators = models.ManyToManyField(Profile, related_name="curated_projects")
     students = models.ManyToManyField(Profile, related_name="student_projects")
     link = models.CharField(verbose_name="Ссылка на организационный чат", max_length=100, null=True, blank=True)
-    start = models.DateField(auto_now=True)
+    start = models.DateField(verbose_name="Дата начала", null=True, blank=True)
     end = models.DateField(verbose_name="Дата окончания", null=True, blank=True)
 
     def __str__(self):
